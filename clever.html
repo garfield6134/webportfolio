@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clever | Log in with Clever</title>
+  <link rel="icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family: Messina; src: url("fonts/Messina-Sans-Regular.woff") format("woff"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: Messina; src: url("fonts/Messina-Sans-SemiBold.woff") format("woff"); font-weight: 600; font-display: swap; }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; color: #13151a; background: #f0f7ff; font-family: Messina, Arial, sans-serif; }
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { cursor: pointer; }
+    a { color: #1464ff; }
+    a:hover { text-decoration: underline; }
+    :focus-visible { outline: 3px solid #407ffc; outline-offset: 4px; }
+    .brand { color: #1464ff; font-size: 38px; font-weight: 600; letter-spacing: -2px; text-decoration: none; line-height: 1; }
+    .brand:hover { text-decoration: none; }
+    .shell { min-height: 100dvh; display: grid; grid-template-columns: minmax(330px, 36.55%) 1fr; grid-template-rows: 1fr auto; }
+    .visual { position: relative; background: #e7f1fa url("images/4524ffbfdfddae02be26eff4426ec7fe.jpg") right center / cover no-repeat; min-height: 600px; }
+    .district { position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: center; gap: 24px; padding: 24px 32px; background: #ffffffb0; backdrop-filter: blur(20px); }
+    .district-icon { display: grid; place-items: center; flex-shrink: 0; width: 72px; height: 72px; border: 1px solid #dee0e5; border-radius: 8px; background: white; color: #1464ff; }
+    .district-icon img { width: 48px; height: 48px; object-fit: contain; }
+    .district-name { margin: 0 0 8px; font-size: 24px; font-weight: 600; letter-spacing: -.75px; }
+    .text-button { padding: 0; border: 0; background: none; color: #1464ff; text-decoration: underline; }
+    .content { padding: 28px clamp(32px, 5.4vw, 104px) 64px; min-width: 0; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 44px; }
+    .admin-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; color: #3c404f; border: 0; border-radius: 4px; padding: 12px 16px; text-decoration: none; font-size: 16px; font-weight: 400; line-height: 20px; background: white; box-shadow: inset 0 0 0 1px #c2c7d1; }
+    .admin-link svg { width: 20px; height: 20px; }
+    .home-content { max-width: 664px; margin: clamp(80px, 14vh, 180px) auto 0; display: grid; gap: 24px; }
+    h1 { margin: 0; font-size: 36px; font-weight: 600; letter-spacing: -1px; line-height: 1.15; }
+    .google { width: 100%; height: min(420px, max(288px, calc(100dvh - 320px))); display: flex; flex-direction: column; align-items: center; padding: 24px; gap: 24px; border: 1px solid #8e93a6; border-radius: 8px; background: white; box-shadow: 0 10px 20px #0a1e461a; transition: transform 150ms; }
+    .google:hover { transform: scale(1.02); border-color: #163e8d; }
+    .google img { flex: 0 1 auto; width: 128px; height: 155px; max-height: 100%; max-width: 100%; margin: auto; object-fit: contain; }
+    .google span { display: block; width: 100%; padding: 18px; border-radius: 8px; background: #f0f7ff; color: #1464ff; font-size: 28px; font-weight: 600; }
+    .help-link { justify-self: center; font-size: 18px; }
+    .legal { grid-column: 1 / -1; display: flex; align-items: center; justify-content: flex-end; gap: 28px; min-height: 56px; padding: 16px 32px; background: #f8f9fa; border-top: 1px solid #c9d1da; font-size: 14px; }
+    .legal a { color: inherit; text-decoration: none; }
+    .legal .brand { margin-right: auto; font-size: 28px; color: #1464ff; }
+    .admin-visual { background-position: 100% 57%; background-size: auto 190%; }
+    .visual-brand { position: absolute; top: 47.5%; left: 64%; transform: translate(-50%, -50%); font-size: clamp(48px, 4.3vw, 76px); }
+    .admin-content { max-width: 664px; margin-top: clamp(100px, 18vh, 220px); }
+    .back { display: inline-block; margin-bottom: 24px; font-size: 18px; text-decoration: none; }
+    #admin-form { margin-top: 34px; }
+    label { display: block; font-size: 20px; margin-bottom: 12px; }
+    input { width: 100%; height: 50px; padding: 8px 12px; border: 2px solid #184fa4; border-radius: 4px; background: white; font-size: 18px; }
+    input[aria-invalid="true"] { border-color: #a92323; }
+    .error { min-height: 20px; margin: 8px 0; color: #a92323; font-size: 15px; }
+    .next { display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; height: 60px; margin-top: 12px; border: 0; border-radius: 4px; background: #1464ff; color: white; font-weight: 600; font-size: 17px; }
+    .next:disabled { background: #e5e6e8; color: #6e7585; cursor: not-allowed; }
+    .help-content { max-width: 664px; margin: 100px auto 0; }
+    .help-content p { font-size: 18px; line-height: 1.65; color: #526174; }
+    .help-option { padding: 24px; margin-top: 24px; border: 1px solid #c9d7e8; border-radius: 8px; background: white; }
+    .help-option h2 { margin: 0; font-size: 22px; }
+    .help-option p { margin: 12px 0 20px; font-size: 16px; }
+    #notice { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 10; width: min(420px, calc(100% - 32px)); padding: 16px; background: #fff4f3; border: 1px solid #f2b8b5; border-radius: 6px; color: #8c1d18; text-align: center; box-shadow: 0 8px 24px #1e2b432e; }
+    #portal { min-height: 100dvh; padding: 50px 24px; color: white; background: linear-gradient(135deg, #101632, #193b58, #301b50); font-family: Inter, Arial, sans-serif; }
+    #portal h1, #portal h2, #portal h3 { text-align: center; font-family: Orbitron, sans-serif; letter-spacing: 3px; color: white; text-shadow: 0 0 12px #00eaff, 0 0 32px #7b2cff; }
+    #portal h1 { margin: 10px 0 20px; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 900; }
+    #portal h2 { margin: 0 0 45px; font-size: clamp(1.8rem, 5vw, 3rem); }
+    #portal header h3 { margin: 0 0 56px; font-size: 1rem; }
+    .sections { width: min(1100px, 100%); margin: auto; display: grid; gap: 36px; }
+    #portal .section-title { margin: 0 0 16px; font-size: clamp(1.3rem, 3vw, 1.8rem); letter-spacing: 1px; }
+    .game-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .game-card { position: relative; display: block; aspect-ratio: 1; overflow: hidden; border: 2px solid #54eaff; border-radius: 20px; background: radial-gradient(circle at 70% 25%, #285b75, transparent 60%), #0c1430; color: white; text-decoration: none; box-shadow: 0 0 12px #00d9ff66, inset 0 0 16px #00d9ff22; transition: transform 180ms, box-shadow 180ms; }
+    .game-card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .game-card__art { position: absolute; inset: 0; display: grid; place-items: center; padding: 30px 30px 80px; color: #c0fbff; font: 900 clamp(1.7rem, 4vw, 3.8rem)/1 Orbitron, sans-serif; text-shadow: 0 0 24px #00eaff88; }
+    .game-card__label { position: absolute; inset: auto 0 0; padding: 32px 12px 16px; background: linear-gradient(transparent, #000d); font-size: 1.1rem; font-weight: 700; text-align: center; }
+    .game-card:hover, .game-card:focus-visible { transform: translateY(-5px) scale(1.02); box-shadow: 0 0 22px #00eaff, 0 0 45px #7b2cff88; text-decoration: none; }
+    .game-card--coming-soon { border-style: dashed; opacity: .65; }
+    .portal-footer { margin-top: 64px; text-align: center; color: #a7bace; font-size: 12px; letter-spacing: 2px; }
+    @media (max-width: 1200px) { .district-icon { width: 56px; height: 56px; } }
+    @media (max-height: 600px) { .google img { width: 80px; height: 80px; max-height: 80px; max-width: 80px; } }
+    @media (max-width: 800px) {
+      .shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+      .visual { min-height: 180px; }
+      .district { position: static; min-height: 180px; padding: 24px; }
+      .district-name { font-size: 20px; }
+      .content { padding: 24px; }
+      .home-content, .admin-content, .help-content { margin: 56px auto 64px; }
+      .admin-visual { background-position: 85% 56%; }
+      .visual-brand { top: 50%; left: 24%; font-size: 48px; }
+      .legal { justify-content: center; flex-wrap: wrap; gap: 16px 24px; padding: 18px 24px; }
+      .legal .brand { display: none; }
+    }
+    @media (max-width: 700px) { .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 450px) {
+      h1 { font-size: 30px; }
+      .brand { font-size: 32px; }
+      .visual { min-height: 145px; }
+      .visual-brand { font-size: 38px; left: 24%; }
+      #portal { padding: 32px 18px; }
+      .game-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div id="login-shell" class="shell">
+    <aside id="visual" class="visual" aria-label="School district">
+      <a class="brand visual-brand" href="#home" aria-label="Clever home" hidden>Clever</a>
+      <div id="district" class="district">
+        <div class="district-icon" aria-hidden="true">
+          <img alt="" width="48" height="48" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI1OCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDYwIDU4Ij48cGF0aCBmaWxsPSIjZjc4MjM5IiBkPSJNNC43NjkgMzcuNDkyYzAtLjA4NC4wNzMtLjE1My4xNjMtLjE1M2gxMS4yODJ2MTUuMzE4SDQuOTMyYy0uMDkgMC0uMTYzLS4wNjgtLjE2My0uMTUzek00Mi45MiAzNy4zMzloMTEuMjgyYy4wOSAwIC4xNjMuMDY5LjE2My4xNTN2MTUuMDEyYzAgLjA4NS0uMDczLjE1My0uMTYzLjE1M0g0Mi45MnoiLz48cGF0aCBmaWxsPSIjZmZlNDc4IiBkPSJtMTYuMjE0IDE5LjU5IDEzLjM1My02LjE4Nkw0Mi45MiAxOS41OXYzNC4wMjVIMTYuMjE0eiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yNS42MDUgNDEuODg0YzAtLjA3OC4wNy0uMTQxLjE1OC0uMTQxaDcuNjA3Yy4wODcgMCAuMTU4LjA2My4xNTguMTQxdjExLjY2N2gtNy45MjN6TTMzLjUyOCAyNy44OTJhMy45NiAzLjk2IDAgMCAxLTMuOTYyIDMuOTU4IDMuOTYgMy45NiAwIDAgMS0zLjk2MS0zLjk1OCAzLjk2IDMuOTYgMCAwIDEgMy45NjEtMy45NTcgMy45NiAzLjk2IDAgMCAxIDMuOTYyIDMuOTU3Ii8+PHBhdGggZmlsbD0iIzEzMTUxYSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMjkuNTY2IDMuODNjLjQwNyAwIC43MzcuMzI3LjczNy43MzJ2LjczMmg1LjE1Yy40MDYgMCAuNzM1LjMyNy43MzUuNzMxVjcuNDljMCAuNDA0LS4zMjkuNzMxLS43MzUuNzMyaC01LjE1djQuNTg0bDUuNTQyIDIuNTk0IDEwLjUzMSA0LjM2OGEuNzMuNzMgMCAwIDEgLjM5Ny45NTcuNzQuNzQgMCAwIDEtLjk2My4zOTRsLTIuMjY0LS45NHYxNS44NjVINTMuN2MuODkzIDAgMS42MTguNzIgMS42MTggMS42MXYxNC4zNWMwIC44OS0uNzI0IDEuNjEtMS42MTggMS42MTFINS40MzRhMS42MTUgMS42MTUgMCAwIDEtMS42MTktMS42MVYzNy42NTNjMC0uODg5LjcyNS0xLjYxIDEuNjE5LTEuNjFoMTAuMTUzVjIwLjE4bC0yLjI2NC45NGEuNzM3LjczNyAwIDAgMS0uOTYyLS4zOTUuNzMuNzMgMCAwIDEgLjM5Ny0uOTU3bDEwLjUxNi00LjM2MiA1LjU1Ny0yLjYwMVY0LjU2MmMwLS40MDUuMzMtLjczMy43MzUtLjczM001LjQzNCAzNy41MDdhLjE0Ny4xNDcgMCAwIDAtLjE0OC4xNDV2MTQuMzUyYzAgLjA4LjA2Ny4xNDUuMTQ4LjE0NWgxMC4xNTNWMzcuNTA4em0xOC40NDMtMjAuNzY2LTYuODE4IDMuMTk0VjUyLjE1aDcuMzU3VjQyLjA0N2MwLS44OS43MjUtMS42MSAxLjYxOC0xLjYxSDMzLjFjLjg5MyAwIDEuNjE4LjcyIDEuNjE4IDEuNjFWNTIuMTVoNy4zNTdWMTkuOTM3bC02LjgyOC0zLjE5OC01LjY4LTIuMzU1ek0yNi4wMzQgNDEuOWEuMTQ3LjE0NyAwIDAgMC0uMTQ2LjE0N1Y1Mi4xNWg3LjM1N1Y0Mi4wNDdhLjE1LjE1IDAgMCAwLS4wOS0uMTM1TDMzLjEgNDEuOXptMTcuNTEyIDEwLjI1SDUzLjdsLjA1Ni0uMDExYS4xNS4xNSAwIDAgMCAuMDc5LS4wNzlsLjAxMi0uMDU1VjM3LjY1M2EuMTUuMTUgMCAwIDAtLjA5MS0uMTMzbC0uMDU2LS4wMTJINDMuNTQ2em0tMTMuOTgtMjkuMjg1YzIuODQ1IDAgNS4xNSAyLjI5NSA1LjE1IDUuMTI1cy0yLjMwNSA1LjEyNS01LjE1IDUuMTI1Yy0yLjg0NCAwLTUuMTUtMi4yOTQtNS4xNS01LjEyNXMyLjMwNi01LjEyNSA1LjE1LTUuMTI1bTAgMS40NjRhMy42NyAzLjY3IDAgMCAwLTMuNjc4IDMuNjYxIDMuNjcgMy42NyAwIDAgMCAzLjY3OCAzLjY2IDMuNjcgMy42NyAwIDAgMCAzLjY4LTMuNjYgMy42NyAzLjY3IDAgMCAwLTMuNjgtMy42NiIgY2xpcC1ydWxlPSJldmVub2RkIi8+PC9zdmc+">
+        </div>
+        <div><p class="district-name">Fairfax Co Public School Dist</p><button class="text-button" data-action="change">Change</button></div>
+      </div>
+    </aside>
+    <div class="content">
+      <nav class="topbar" aria-label="Main navigation">
+        <a class="brand" href="#home" aria-label="Clever home">Clever</a>
+        <a class="admin-link" href="#admin">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="9" r="5"/><path d="m12 12 8 8m-2-2 3-3m-6 0 3-3"/></svg>
+          Admin
+        </a>
+      </nav>
+      <main id="home" class="home-content">
+        <h1 tabindex="-1">Log in with Clever</h1>
+        <button class="google" data-action="google" aria-label="Google">
+          <img id="google-icon" alt="" width="112" height="112" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNDggNDgiPjxkZWZzPjxwYXRoIGlkPSJhIiBkPSJNNDQuNSAyMEgyNHY4LjVoMTEuOEMzNC43IDMzLjkgMzAuMSAzNyAyNCAzN2MtNy4yIDAtMTMtNS44LTEzLTEzczUuOC0xMyAxMy0xM2MzLjEgMCA1LjkgMS4xIDguMSAyLjlsNi40LTYuNEMzNC42IDQuMSAyOS42IDIgMjQgMiAxMS44IDIgMiAxMS44IDIgMjRzOS44IDIyIDIyIDIyYzExIDAgMjEtOCAyMS0yMiAwLTEuMy0uMi0yLjctLjUtNHoiLz48L2RlZnM+PGNsaXBQYXRoIGlkPSJiIj48dXNlIHhsaW5rOmhyZWY9IiNhIiBvdmVyZmxvdz0idmlzaWJsZSIvPjwvY2xpcFBhdGg+PHBhdGggY2xpcC1wYXRoPSJ1cmwoI2IpIiBmaWxsPSIjRkJCQzA1IiBkPSJNMCAzN1YxMWwxNyAxM3oiLz48cGF0aCBjbGlwLXBhdGg9InVybCgjYikiIGZpbGw9IiNFQTQzMzUiIGQ9Ik0wIDExbDE3IDEzIDctNi4xTDQ4IDE0VjBIMHoiLz48cGF0aCBjbGlwLXBhdGg9InVybCgjYikiIGZpbGw9IiMzNEE4NTMiIGQ9Ik0wIDM3bDMwLTIzIDcuOSAxTDQ4IDB2NDhIMHoiLz48cGF0aCBjbGlwLXBhdGg9InVybCgjYikiIGZpbGw9IiM0Mjg1RjQiIGQ9Ik00OCA0OEwxNyAyNGwtNC0zIDM1LTEweiIvPjwvc3ZnPg==">
+          <span>Google</span>
+        </button>
+        <a class="help-link" href="#help">Get help</a>
+      </main>
+      <main id="help" class="help-content" hidden>
+        <a class="back" href="#home">← Back</a>
+        <h1 tabindex="-1">Get help logging in</h1>
+        <p>Fairfax Co Public School Dist</p>
+        <section class="help-option">
+          <h2>Students and teachers</h2>
+          <p>For school account or password help, contact your teacher or your school’s IT support.</p>
+          <a href="#home">Back to school login</a>
+        </section>
+        <section class="help-option">
+          <h2>District administrators</h2>
+          <p>Use the same Birb Gang demo access flow as the Admin button on the home page.</p>
+          <a class="admin-link" href="#admin">Admin</a>
+        </section>
+      </main>
+      <main id="admin" class="admin-content" hidden>
+        <a id="admin-back" class="back" href="#home">← Back</a>
+        <h1 tabindex="-1">District Admin login</h1>
+        <form id="admin-form" autocomplete="off" novalidate>
+          <label id="admin-label" for="admin-input">Email</label>
+          <input id="admin-input" name="demo-access-email" type="email" autocomplete="off" autocapitalize="none" spellcheck="false" value="" aria-describedby="admin-error">
+          <p id="admin-error" class="error" role="alert"></p>
+          <button id="next" class="next" type="submit" disabled><span>Next</span><span aria-hidden="true">→</span></button>
+        </form>
+      </main>
+    </div>
+    <footer class="legal">
+      <a class="brand" href="#home" aria-label="Clever home">Clever</a>
+      <a href="https://clever.com/trust/terms" target="_blank" rel="noopener noreferrer">Terms of Use</a>
+      <a href="https://clever.com/trust/privacy/policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+      <span>Clever © <span id="year"></span></span>
+    </footer>
+  </div>
+  <div id="portal" hidden>
+    <header><h1 tabindex="-1">birb gang v2</h1><h2>we are back</h2><h3>updates weekly</h3></header>
+    <main class="sections" id="sections"></main>
+    <footer class="portal-footer">birb gang v2</footer>
+  </div>
+  <div id="notice" role="alert" hidden></div>
+  <script>
+    // Public browser-only demo; no credentials or login state are persisted.
+    const $ = (selector) => document.querySelector(selector);
+    let step = "email", demoAccess = false, noticeTimer;
+    const input = $("#admin-input"), next = $("#next"), error = $("#admin-error");
+
+    function resetForm() {
+      step = "email";
+      $("#admin-form").reset();
+      input.value = "";
+      input.type = "email";
+      input.name = "demo-access-email";
+      input.autocomplete = "off";
+      input.removeAttribute("aria-invalid");
+      $("#admin-label").textContent = "Email";
+      next.firstElementChild.textContent = "Next";
+      next.disabled = true;
+      error.textContent = "";
+    }
+
+    function render() {
+      let page = location.hash.slice(1) || "home";
+      // The gate is for demonstration only, not a security boundary.
+      if (page === "portal" && !demoAccess) page = "admin";
+      if (!["home", "help", "admin", "portal"].includes(page)) page = "home";
+      if (location.hash !== "#" + page) history.replaceState(null, "", "#" + page);
+      resetForm();
+      $("#notice").hidden = true;
+      $("#login-shell").hidden = page === "portal";
+      $("#portal").hidden = page !== "portal";
+      for (const id of ["home", "help", "admin"]) $("#" + id).hidden = id !== page;
+      $("#visual").classList.toggle("admin-visual", page === "admin");
+      $(".visual-brand").hidden = page !== "admin";
+      $("#district").hidden = page === "admin";
+      document.title = page === "portal" ? "birbgang.uk" : page === "help" ? "Get help | Clever" : page === "admin" ? "District Admin login | Clever" : "Clever | Log in with Clever";
+      if (page === "portal") buildPortal();
+      window.scrollTo(0, 0);
+      $("#" + page + " h1").focus({ preventScroll: true });
+    }
+
+    function notify(message) {
+      clearTimeout(noticeTimer);
+      $("#notice").textContent = message;
+      $("#notice").hidden = false;
+      noticeTimer = setTimeout(() => { $("#notice").hidden = true; }, 4000);
+    }
+
+    document.addEventListener("click", (event) => {
+      const action = event.target.closest("[data-action]")?.dataset.action;
+      if (action === "google") notify("Login failed. Please try again later.");
+      if (action === "change") notify("School change failed. Please try again later.");
+      if (event.target.closest('a[href="#admin"]')) resetForm();
+      if (event.target.closest('a[href="#home"]')) demoAccess = false;
+    });
+
+    input.addEventListener("input", () => {
+      next.disabled = !input.value;
+      error.textContent = "";
+      input.removeAttribute("aria-invalid");
+    });
+
+    $("#admin-back").addEventListener("click", (event) => {
+      if (step === "password") {
+        event.preventDefault();
+        resetForm();
+        input.focus();
+      }
+    });
+
+    $("#admin-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (step === "email" && input.value === "birb@fcps.edu") {
+        step = "password";
+        input.value = "";
+        input.type = "password";
+        input.name = "demo-access-password";
+        input.autocomplete = "new-password";
+        $("#admin-label").textContent = "Password";
+        next.firstElementChild.textContent = "Log in";
+        next.disabled = true;
+        error.textContent = "";
+        input.removeAttribute("aria-invalid");
+        input.focus();
+      } else if (step === "password" && input.value === "birbxpixel") {
+        input.value = "";
+        demoAccess = true;
+        location.hash = "portal";
+      } else {
+        error.textContent = "Invalid login";
+        input.setAttribute("aria-invalid", "true");
+        input.focus();
+      }
+    });
+
+    // Shared portal content is rendered once, after the demo gate.
+    const scriptUrl = (id) => `https://script.google.com/a/macros/fcpsschools.net/s/${id}/exec`;
+    const proxyImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSskiwCAJyB0_jfU9MI19vtjMC--BlxamCoPQ3tiSsv3w&s";
+    const fern = ["Fern proxy", scriptUrl("AKfycbzL-VDUKoW18QhEDrOmyzP4duGHFr7qwluBhUtD7gQmV3jtW0CQ5W26xmpF_3U-ZxAq"), proxyImage];
+    const sections = [
+      ["Game Sites", [
+        ["GN Math", "https://htmlhoster.com/u/gnmath-birb/"],
+        ["Serum os (proxy part doesnt work but games do)", scriptUrl("AKfycbx4aay_vZ7XR7qM1PXRVH6rN1rWZEjvk3KmNfp8udvG2A2kYytE3n4e8qeypz6x5aSV")],
+        ["Monoxide", scriptUrl("AKfycbxAjjyqZRpzjPPutX2l3SiJKH5xo_C49l3fsNP4bSEZQESc3lyyBWXWVbZGI4goiyWc")],
+        ["Duck math", scriptUrl("AKfycbxz9fmahVbuLlI-jII_HsIt9fes5Hx1GfZ73C9M9cP9hHztwUben1uJ_muPeclGdF7Z")],
+        ["Orb Tutoring", "https://test.orbtutoring.com/"],
+        ["Coming soon", null]
+      ]],
+      ["Games", [
+        ["Geometry Dash", "https://htmlhoster.com/u/geometrydash-birb/", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjFHJUqzaVUuXYrrVgByrZJCxuZEzNeS76utu3H5janQVxFn8BTtvqhw&s=10"],
+        ["Retro Bowl", "https://htmlhoster.com/u/retrobowl-birb/"],
+        ["Tung Sahur Horror", "https://htmlhoster.com/u/retrobowl-birb//", "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Full_image_of_Tung_Tung_Tung_Sahur.png/500px-Full_image_of_Tung_Tung_Tung_Sahur.png"],
+        ["Cookie Clicker", "https://htmlhoster.com/u/cookieclicker-birb/", "https://play-lh.googleusercontent.com/UuIl7UOtKmAjXGHX7qX_XvEIfE9K85u92a0f0Bf7hxKMpRmLFV6EdOEA_0MrMpToPpzLGaGP9p4neHwhFqts"]
+      ]],
+      ["Proxy", [
+        ["Petezah Proxy", "https://azino777-nvsa.sbs", proxyImage],
+        ["Nebula Proxy", scriptUrl("AKfycbyj8KTnQoRo6yA7fJ3T6tbQGtV6QLxPjYYSmAAq4HcWgIAd9roVxKR9-zydpjrFSnfV"), proxyImage],
+        ["Rook Proxy", scriptUrl("AKfycbyblS2TdIp81rACgu2tA3OH4bB9zx18JGgsp5Cga7BKDnsHa4Ppa9CA8GUMUjAZOwc"), proxyImage],
+        ["DogeUb proxy", scriptUrl("AKfycbyYOfZYtMp6_BM9_w_lPcCtW037hg_NfdHe-ILyO8RdODhpSVhW4dA_KJAYwkjoo7HO"), proxyImage],
+        fern,
+        ["Aether Proxy", scriptUrl("AKfycbw6wMLJ5jrdPP-hDPKgxzxUeU2ChflOJJkj-3VDtCEiF-fmEMRbP3ytrdUm8ehvlarM")],
+        ["Refract proxy", scriptUrl("AKfycbyPdx3eBdXQ8EfhQ9pHP7WVjVFpgKBJXPzoheIR6HVjl9JsDBvs__dcNObwwg3q_OlR"), proxyImage],
+        ["Tung proxy", scriptUrl("AKfycbwO21zhooyynGwKMiZsPb-GqEtrbAuwoouRuUHccyJ8JbScQJ75vnFO0bY2IdjCAi8g"), proxyImage],
+        fern, fern, fern
+      ]],
+      ["Other Tools", [
+        ["Updates", "https://docs.google.com/document/d/1XMq-7xADyg99H8VMajeQxrs4oInLq-BUYzdKatPdVxM/edit?tab=t.0", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbd_aIKLqR3-J8sB6Q23GJFqDTxN7xxKUAV4IaZ7IRJHuAgCtIW_EPUWQ&s=10"],
+        ["HTML Viewer", "https://htmlhoster.com/u/htmlviewer-birb/", "https://store-images.s-microsoft.com/image/apps.36854.14627978025184977.aca7ba8c-2330-49c9-8fc2-297c83b507e6.5e227a58-a498-4b84-974d-f402ea5ccf1f"],
+        ["About:Blank Tab Opener", "https://1789347.htmlhost.ai/p/a7xc3p4t2szet3iosr4qxpqs2m/about-blank-opener.html"]
+      ]]
+    ];
+
+    function buildPortal() {
+      if ($("#sections").childElementCount) return;
+      sections.forEach(([title, cards], index) => {
+        const section = document.createElement("section");
+        const heading = document.createElement("h3");
+        heading.id = `section-${index}`;
+        heading.className = "section-title";
+        heading.textContent = title;
+        section.setAttribute("aria-labelledby", heading.id);
+        const grid = document.createElement("div");
+        grid.className = "game-grid";
+        cards.forEach(([name, href, image]) => {
+          const card = document.createElement(href ? "a" : "div");
+          card.className = "game-card" + (href ? "" : " game-card--coming-soon");
+          if (href) card.href = href;
+          const art = document.createElement("div");
+          art.className = "game-card__art";
+          art.setAttribute("aria-hidden", "true");
+          art.textContent = name.split(" ").slice(0, 2).map((word) => word[0]).join("").toUpperCase();
+          card.appendChild(art);
+          if (image) {
+            const img = document.createElement("img");
+            img.src = image;
+            img.alt = "";
+            img.loading = "lazy";
+            img.referrerPolicy = "no-referrer";
+            img.onload = () => { art.hidden = true; };
+            img.onerror = () => img.remove();
+            card.appendChild(img);
+          }
+          const label = document.createElement("span");
+          label.className = "game-card__label";
+          label.textContent = name;
+          card.appendChild(label);
+          grid.appendChild(card);
+        });
+        section.append(heading, grid);
+        $("#sections").appendChild(section);
+      });
+    }
+
+    $("#year").textContent = new Date().getFullYear();
+    addEventListener("hashchange", render);
+    addEventListener("pageshow", () => { if (location.hash !== "#portal") resetForm(); });
+    render();
+  </script>
+</body>
+</html>
